@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  influxdb:
+    image: influxdb:2.0
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=renzl94
+      - DOCKER_INFLUXDB_INIT_PASSWORD=Dalailama123of9k8d123!
+      - DOCKER_INFLUXDB_INIT_ORG=renzl94
+      - DOCKER_INFLUXDB_INIT_BUCKET=mydatabase
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mnXG7SdaluWG9vec9d1l_46iCewn6qRpzsN2NwqKCe_d_8xVdM8YsSLdixlKiVtaKKujCan9LZE6kYasv6udOg==
+    ports:
+      - "8086:8086"
+
+  node-app:
+    build: ./node-app
+    depends_on:
+      - influxdb
+    environment:
+      - INFLUX_URL=http://influxdb:8086
+      - INFLUX_TOKEN=mnXG7SdaluWG9vec9d1l_46iCewn6qRpzsN2NwqKCe_d_8xVdM8YsSLdixlKiVtaKKujCan9LZE6kYasv6udOg==
+      - INFLUX_ORG=renzl94
+      - INFLUX_BUCKET=mydatabase
+
+volumes:
+  influxdb_data:
