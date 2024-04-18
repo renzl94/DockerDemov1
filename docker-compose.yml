@@ -23,6 +23,8 @@ services:
       - INFLUX_TOKEN=mnXG7SdaluWG9vec9d1l_46iCewn6qRpzsN2NwqKCe_d_8xVdM8YsSLdixlKiVtaKKujCan9LZE6kYasv6udOg==
       - INFLUX_ORG=renzl94
       - INFLUX_BUCKET=mydatabase
+    ports:
+      - "8080:8080"  # Add this line for port forwarding to the HTTP server
 
 volumes:
   influxdb_data:

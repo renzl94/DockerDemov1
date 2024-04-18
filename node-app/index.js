@@ -11,16 +11,18 @@ const client = new InfluxDB({ url, token });
 const writeApi = client.getWriteApi(org, bucket);
 
 function generateRandomData() {
+  // generer random nummer mellom 1 and 100
+  const randomInteger = Math.floor(Math.random() * 100) + 1;
   const point = new Point('random_measure')
-    .floatField('value', Math.random());
+    .intField('value', randomInteger); // Use intField to store integer values
   writeApi.writePoint(point);
   console.log('Writing point:', point.toLineProtocol());
 }
 
-// Write random data every 5 seconds
+// skriv random data hvert 5 sec
 setInterval(generateRandomData, 5000);
 
-// Flush data and close properly
+// Flush 
 process.on('SIGINT', () => {
   writeApi
     .close()
@@ -30,3 +32,13 @@ process.on('SIGINT', () => {
     })
     .catch(e => console.error(e));
 });
+
+//  port forward regel for å nå fra edge
+const http = require('http');
+
+http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('docker is easy');
+}).listen(8080);
+
+console.log('Server running at http://localhost:8080/');
